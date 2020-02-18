@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+    <div class="container ">
+        <div class="row m-4">
+
+
+            <div class="col">
+
+                <div class="list-group" id="list-tab" role="tablist">
+                    <div class="card card-body">
+                        <div class="list-group">
+                            {% for department in departments %}
+                                {% if department.independent %}
+                                    <button class="btn btn-primary  list-group-item" type="button" data-toggle="collapse" data-target="#{{department.url}}" aria-expanded="True"  aria-pressed="true" aria-controls="{{department.url}}">
+                                        {{department.name}}
+                                    </button>
+                                {% endif %}
+                            {% endfor %}
+                            {% for division in divisions %}
+                                {% if division.independent %} 
+                                    <button class="btn btn-primary  list-group-item" type="button" data-toggle="collapse" data-target="#{{division.url}}" aria-expanded="True"  aria-pressed="true" aria-controls="{{department.url}}">
+                                        {{division.name}}
+                                    </button>
+                                {% endif %}
+                            {% endfor %}
+                            {% for office in offices %}
+                                <button class="btn btn-primary  list-group-item" type="button" data-toggle="collapse" data-target="#{{office.url}}" aria-expanded="True"  aria-pressed="true" aria-controls="{{office.url}}">
+                                    {{office.name}}
+                                </button>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col">
+                {% for department in departments %}
+                    <div class="collapse" id="{{department.url}}">
+                        
+                    </div>
+
+                {% endfor %}
+                {% for division in divisions %}
+                    {% if division.independent %}
+                        <div class="collapse" id="{{division.url}}">
+                            <div class="card card-body">
+                                <h6 class="card-title">{{division.name}}</h6>
+                                {% for person in persons %}
+                                    {% if person.division.name == division.name %}
+                                        <div class="list-group">
+                                            <div class="btn-group-vertical" data-toggle="buttons">
+                                                <button class="btn btn-secondary active" type="button" data-toggle="collapse" data-target="#{{person.url}}" aria-expanded="True"  aria-pressed="true" aria-controls="{{person.url}}">
+                                                    {{ person }}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                {% for office in offices %}
+                    <div class="collapse" id="{{office.url}}">
+                        <div class="card card-body">
+                            <h6 class"card-title">{{office.name}}</h6>
+                            {% for person in persons %}
+                                {% if person.office.name == office.name %}
+                                    <button class="btn btn-secondary active" type="button" data-toggle="collapse" data-target="#{{person.url}}" aria-expanded="True"  aria-pressed="true" aria-controls="{{person.url}}">
+                                        {{ person }}
+                                    </button>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% for department in departments %}
+                        {% if department.office.name == office.name %}
+                            <h6 class="card-title">{{department.name}}</h6>
+                            {% for person in persons %}
+                                {% if person.department.name == department.name %}
+                                    <button class="btn btn-secondary active" type="button" data-toggle="collapse" data-target="#{{person.url}}" aria-expanded="True"  aria-pressed="true" aria-controls="{{person.url}}">
+                                        {{ person }}
+                                    </button>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                    {% for division in divisions %}
+
+                    {% endfor %}
+                {% endfor %}
+            </div>
+
+            <div class="col">
+                {% for person in persons %}
+                    <div class="collapse" id="{{person.url}}">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">{{person.last_name}} {{person.first_name}} {{person.surname}}</h5>
+                                <h6 class="card-subtitle text-muted">{{person.position}}</h6>
+                            </div>
+                            {% if person.image.url %}
+                                <img style="height: 100%; width: 100%; display: block;" src="{{ person.image.url }}" alt="Card image">
+                            {% endif %}
+                            <ul class="list-group list-group-flush">
+                                {% if person.birthday %}
+                                <li class="list-group-item">Ծննդյան Ամսաթիվ: {{person.birthday}}</li>
+                                {% endif %}
+                                {% if person.job_acceptance_date %}
+                                <li class="list-group-item">Ընդունման Ամսաթիվ:  {{person.job_acceptance_date}}</li>
+                                {% endif %}
+                                {% if person.phone_number %}
+                                <li class="list-group-item">Հեռախոս: {{person.phone_number}}</li>
+                                {% endif %}
+                                
+                            </ul>
+                            <div class="card-body">
+                                {% if person.email %}
+                                    <a  target="_blank" href="mailto:{{person.email}}" class="card-link">Էլ. Փոստ: {{person.email}}</a>
+                                {% endif %}
+                            </div>
+                            <div class="card-footer text-muted">
+                            Last update: {{person.last_update}}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

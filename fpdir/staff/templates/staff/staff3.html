@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row m-4">
+
+
+            <div class="col">
+                <div class="list-group" id="list-tab" role="tablist">
+                    {% for department in departments %}
+                        {% if department.independent %}
+                            {% if department.persons %}
+                                <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list" href="#{{department.url}}" role="tab" aria-controls="home">{{department}}</a>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    {% for division in divisions %}
+                        {% if department.independent%}
+                            <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list" href="#{{division.url}}" role="tab" aria-controls="home">{{division}}</a>
+                        {% endif %}
+                    {% endfor %}
+                    {% for office in offices %}
+                        {% if department.independent%}
+                            <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list" href="#{{office.url}}" role="tab" aria-controls="home">{{office}}</a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+
+            <div class="col">
+
+                <div class="tab-content" id="nav-tabContent">
+                    {% for department in departments %}
+                        
+                        <div class="tab-pane fade" id="{{department.url}}" role="tabpanel" aria-labelledby="list-home-list">
+                            <div class="list-group" id="list-tab" role="tablist">
+                            
+                                {% for person in persons %}
+                                    {% if person.department.url == department.url %}
+                                        <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list" href="#{{person.url}}" role="tab" aria-controls="home">{{person}}</a>
+                                    {% endif %}
+                                {% endfor %}
+                                
+                            </div>
+                        </div>
+
+                    {% endfor %}
+                    {% for division in divisions %}
+                        <div class="tab-pane fade" id="{{division.url}}" role="tabpanel" aria-labelledby="list-home-list">
+                            <div class="list-group" id="list-tab" role="tablist">
+                                {% for person in persons %}
+                                    {% if person.division.url == division.url %}
+                                        <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list" href="#{{person.url}}" role="tab" aria-controls="home">{{person}}</a>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {% for office in offices %}
+                        <div class="tab-pane fade" id="{{office.url}}" role="tabpanel" aria-labelledby="list-home-list">
+                            <div class="list-group" id="list-tab" role="tablist">
+                                {% for person in persons %}
+                                    {% if person.office.url == division.url %}
+                                        <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list" href="#l{{person.url}}" role="tab" aria-controls="home">{{person}}</a>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+
+            <div class="col">
+                <div class="tab-content" id="nav-tabContent">
+                    {% for person in persons %}
+                        <div class="tab-pane fade" id="{{person.url}}" role="tabpanel" aria-labelledby="list-home-list">
+                            <div class="list-group" id="list-tab" role="tablist">
+                                <div class="card" style="width: 18rem;">
+                                    {% if person.image.url %}
+                                        <img style="height: 100%; width: 100%; display: block;" src="{{ person.image.url }}" alt="Card image">
+                                    {% endif %}
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{person.last_name}} {{person.first_name}} {{person.surname}}</h5>
+                                        <h6 class="card-subtitle text-muted">{{person.position}}</h6>
+                                    </div>
+                                        <ul class="list-group list-group-flush">
+                                            {% if person.birthday %}
+                                            <li class="list-group-item">Ծննդյան Ամսաթիվ: {{person.birthday}}</li>
+                                            {% endif %}
+                                            {% if person.job_acceptance_date %}
+                                            <li class="list-group-item">Ընդունման Ամսաթիվ:  {{person.job_acceptance_date}}</li>
+                                            {% endif %}
+                                            {% if person.phone_number %}
+                                            <li class="list-group-item">Հեռախոս: {{person.phone_number}}</li>
+                                            {% endif %}
+                                        </ul>
+                                    <div class="card-body">
+                                        {% if person.email %}
+                                            <a  target="_blank" href="mailto:{{person.email}}" class="card-link">Էլ. Փոստ: {{person.email}}</a>
+                                        {% endif %}
+                                    </div>
+                                    <div class="card-footer text-muted">
+                                        Last update: {{person.last_update}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+
+        </div>
+        
+    </div>
+{% endblock %}
